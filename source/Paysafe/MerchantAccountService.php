@@ -373,6 +373,25 @@ class MerchantAccountService
     }
 
     /**
+     * Get Our Terms and Conditions
+     *
+     * @return TermsAndConditions
+     * @throws PaysafeException
+     */
+    function getTermsAndConditions()
+    {
+        $request = new Request(array(
+            'method' => Request::GET,
+            'uri' => $this->prepareURI('/accounts/' . $this->client->getAccount() . '/termsandconditions'),
+        ));
+        /** @var Response $response */
+        $response = $this->client->processRequest($request, true);
+        $version = isset($response->headers['X_TERMS_VERSION']) ? $response->headers['X_TERMS_VERSION'] : '1.0';
+
+        return new TermsAndConditions(['version' => $version, 'content' => $response->content]);
+    }
+
+    /**
      * Accept Our Terms and Conditions
      *
      * @param TermsAndConditions $termsAndConditions

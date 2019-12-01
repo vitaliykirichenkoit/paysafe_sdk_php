@@ -6,6 +6,8 @@ use Paysafe\Environment;
 use Paysafe\CardPayments\Authorization;
 
 $client = new PaysafeApiClient($paysafeApiKeyId, $paysafeApiKeySecret, Environment::TEST, $paysafeAccountNumber);
+
+$terms = $client->merchantAccountService()->getTermsAndConditions();
 if ($_POST) {
 	try {
 		$result = $client->merchantAccountService()->acceptTermsAndConditions(new \Paysafe\AccountManagement\TermsAndConditions(array(
@@ -37,7 +39,13 @@ if ($_POST) {
 		<form method="post">
 			<fieldset>
 				<legend>Accept Our Terms and Conditions</legend>
-                <input type="input" name="version" value="1.0">
+                <input type="input" name="version" value="<?php
+                    if (isset($_POST['version'])) {
+                        echo $_POST['version'];
+                    } else {
+                        echo $terms->version;
+                    }
+                ?>">
 			</fieldset>
 			<input type="submit" />
 		</form>
@@ -48,6 +56,11 @@ if ($_POST) {
                 Terms and Conditions
             </a>
 
+            <br>
+            <fieldset>
+                <legend>Terms and Conditions</legend>
+                <div><?php echo $terms->content; ?></div>
+            </fieldset>
         </div>
     </body>
 </html>

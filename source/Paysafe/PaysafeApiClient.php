@@ -201,14 +201,15 @@ class PaysafeApiClient
     }
 
     /**
-	 *
-	 * @param \Paysafe\Request $request
-	 * @return type
-	 * @throws \Paysafe\PaysafeException
-	 */
-    public function processRequest(Request $request)
+     * @param \Paysafe\Request $request
+     * @param bool $raw
+     * @return type
+     * @throws PaysafeException
+     */
+    public function processRequest(Request $request, $raw = false)
     {
         $curl = curl_init();
+        $headers = array();
         $opts = array(
              CURLOPT_URL => $request->buildUrl($this->apiEndPoint),
              CURLOPT_HTTPHEADER => array(
@@ -219,6 +220,16 @@ class PaysafeApiClient
              CURLOPT_RETURNTRANSFER => true,
              CURLOPT_SSL_VERIFYPEER => false,
              CURLOPT_SSL_VERIFYHOST => 0,
+             CURLOPT_HEADERFUNCTION => function($curl, $header) use (&$headers) {
+                 $len = strlen($header);
+                 $header = explode(':', $header, 2);
+                 if (count($header) < 2) // ignore invalid headers
+                     return $len;
+
+                 $headers[trim($header[0])] = trim($header[1]);
+
+                 return $len;
+             },
         );
         if(($cert = static::getCACertPath())) {
             $opts[CURLOPT_CAINFO] = $cert;
@@ -238,6 +249,10 @@ class PaysafeApiClient
         }
         $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
+
+        if ($raw) {
+            return new Response(['statusCode' => $responseCode, 'headers' => $headers, 'content' => $response]);
+        }
 
         if (!($return = json_decode($response, true))) {
             if ($responseCode < 200 || $responseCode >= 206) {

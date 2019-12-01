@@ -101,7 +101,7 @@ class MerchantAccountServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(PaysafeException::class);
         $this->expectExceptionCode(500);
-        $this->expectExceptionMessage('Missing required properties: name, currency, region, legalEntity, productCode, category, phone, yearlyVolumeRange, averageTransactionAmount, merchantDescriptor, caAccountDetails');
+        $this->expectExceptionMessage('Missing required properties: name, currency, region, legalEntity, productCode, category, phone, yearlyVolumeRange, averageTransactionAmount, merchantDescriptor');
 
         $mas->createMerchantAccount(new MerchantAccount());
     }
@@ -479,6 +479,25 @@ class MerchantAccountServiceTest extends \PHPUnit_Framework_TestCase
         $param_no_id = $param_array;
         unset($param_no_id['id']);
         $this->assertThat($retval->toJson(), $this->equalTo(json_encode($param_no_id)));
+    }
+
+    public function testGetTermsAndConditions()
+    {
+        $this->mock_api_client
+            ->expects($this->once())
+            ->method('processRequest')
+            ->with($this->isInstanceOf(Request::class), $this->isTrue())
+            ->will($this->returnCallback(function (Request $param, $raw) {
+                return new Response(['content' => 'test', 'headers' => ['X_TERMS_VERSION' => '2.0']]);
+            }));
+
+        $mas = new MerchantAccountService($this->mock_api_client);
+
+        $result = $mas->getTermsAndConditions();
+
+        $this->assertInstanceOf(TermsAndConditions::class, $result);
+        $this->assertEquals('test', $result->content);
+        $this->assertEquals('2.0', $result->version);
     }
 
     public function testAcceptTermsAndConditionsMissingRequiredFields()
