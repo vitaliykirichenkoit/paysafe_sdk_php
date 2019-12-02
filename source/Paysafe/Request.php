@@ -154,7 +154,7 @@ class Request implements \ArrayAccess
 	 */
     public function offsetExists($offset)
     {
-        return isset($this->body->$offset);
+        return $this->body ? isset($this->body->$offset) : false;
     }
 
     /**
@@ -174,7 +174,7 @@ class Request implements \ArrayAccess
 	 */
     public function offsetGet($offset)
     {
-        return $this->body->$offset;
+        return $this->body ? $this->body->$offset : null;
     }
 
     /**
