@@ -169,6 +169,7 @@ class MerchantAccountService
         $address->setOptionalFields(array(
             'street2'
         ));
+        $this->fixState($address);
         $request = new Request(array(
             'method' => Request::POST,
             'uri' => $this->prepareURI('/accounts/' . $this->client->getAccount() . '/addresses'),
@@ -232,6 +233,7 @@ class MerchantAccountService
         $businessOwnerAddress->setOptionalFields(array(
             'street2'
         ));
+        $this->fixState($businessOwnerAddress);
         $request = new Request(array(
             'method' => Request::POST,
             'uri' => $this->prepareURI('/businessowners/' . $businessOwnerAddress->businnessOwnerId . '/currentaddresses'),
@@ -263,6 +265,7 @@ class MerchantAccountService
         $businessOwnerAddress->setOptionalFields(array(
             'street2'
         ));
+        $this->fixState($businessOwnerAddress);
         $request = new Request(array(
             'method' => Request::POST,
             'uri' => $this->prepareURI('/businessowners/' . $businessOwnerAddress->businnessOwnerId . '/previousaddresses'),
@@ -328,8 +331,8 @@ class MerchantAccountService
     /**
      * Add Merchant Ach Bank Account
      *
-     * @param MerchantEftBankAccount $bankAccount
-     * @return MerchantEftBankAccount
+     * @param MerchantAchBankAccount $bankAccount
+     * @return MerchantAchBankAccount
      * @throws PaysafeException
      */
     function addSubMerchantAchBankAccount(MerchantAchBankAccount $bankAccount)
@@ -341,6 +344,29 @@ class MerchantAccountService
         $request = new Request(array(
             'method' => Request::POST,
             'uri' => $this->prepareURI('/merchants/' . $bankAccount->merchantId . '/achbankaccounts'),
+            'body' => $bankAccount
+        ));
+        $response = $this->client->processRequest($request);
+
+        return new MerchantAchBankAccount($response);
+    }
+
+    /**
+     * Update Ach Bank Account
+     *
+     * @param MerchantAchBankAccount $bankAccount
+     * @return MerchantAchBankAccount
+     * @throws PaysafeException
+     */
+    function updateMerchantAchBankAccount(MerchantAchBankAccount $bankAccount)
+    {
+        $bankAccount->setRequiredFields(array(
+            'accountNumber',
+            'routingNumber'
+        ));
+        $request = new Request(array(
+            'method' => Request::PUT,
+            'uri' => $this->prepareURI('/achbankaccounts/' . $bankAccount->id),
             'body' => $bankAccount
         ));
         $response = $this->client->processRequest($request);
@@ -365,6 +391,30 @@ class MerchantAccountService
         $request = new Request(array(
             'method' => Request::POST,
             'uri' => $this->prepareURI('/accounts/' . $this->client->getAccount() . '/eftbankaccounts'),
+            'body' => $bankAccount
+        ));
+        $response = $this->client->processRequest($request);
+
+        return new MerchantEftBankAccount($response);
+    }
+
+    /**
+     * Update Eft Bank Account
+     *
+     * @param MerchantEftBankAccount $bankAccount
+     * @return MerchantEftBankAccount
+     * @throws PaysafeException
+     */
+    function updateMerchantEftBankAccount(MerchantEftBankAccount $bankAccount)
+    {
+        $bankAccount->setRequiredFields(array(
+            'accountNumber',
+            'transitNumber',
+            'institutionId'
+        ));
+        $request = new Request(array(
+            'method' => Request::PUT,
+            'uri' => $this->prepareURI('/eftbankaccounts/' . $bankAccount->id ),
             'body' => $bankAccount
         ));
         $response = $this->client->processRequest($request);
@@ -477,5 +527,15 @@ class MerchantAccountService
         $response = $this->client->processRequest($request);
 
         return new Merchant($response);
+    }
+
+    /**
+     * @param JSONObject $address
+     */
+    function fixState(JSONObject $address)
+    {
+        if (isset($address->state)) {
+            $address->state = str_ireplace('OR_', 'OR', $address->state);
+        }
     }
 }
