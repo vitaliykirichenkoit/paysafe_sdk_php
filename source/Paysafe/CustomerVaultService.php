@@ -1022,4 +1022,120 @@ class CustomerVaultService
         return $response;
         
     }
+
+    /**
+     * @param CustomerVault\ACHSingleUseToken $ACHSingleUseToken
+     * @return CustomerVault\ACHSingleUseToken
+     * @throws PaysafeException
+     */
+    public function createACHSingleUseToken(CustomerVault\ACHSingleUseToken $ACHSingleUseToken)
+    {
+        $ACHSingleUseToken->setRequiredFields([
+            'achBankAccount',
+            'billingAddress',
+        ]);
+
+        $ACHSingleUseToken->setOptionalFields([
+            'profile'
+        ]);
+
+        $ACHSingleUseToken->profile->setOptionalFields([
+            'firstName',
+            'lastName',
+            'email',
+        ]);
+
+        $ACHSingleUseToken->profile->dateOfBirth->setRequiredFields([
+            'year',
+            'month',
+            'day',
+        ]);
+
+        $ACHSingleUseToken->achBankAccount->setRequiredFields([
+            'accountNumber',
+            'accountHolderName',
+            'routingNumber',
+            'accountType',
+        ]);
+
+        $ACHSingleUseToken->billingAddress->setRequiredFields([
+            'street',
+            'city',
+            'zip',
+            'country',
+        ]);
+
+        $ACHSingleUseToken->billingAddress->setOptionalFields([
+            'nickName',
+            'street2',
+            'state',
+        ]);
+
+        $request = new Request(array(
+            'method' => Request::POST,
+            'uri' => $this->prepareURI("/achsingleusetokens"),
+            'body' => $ACHSingleUseToken
+        ));
+        $response = $this->client->processRequest($request);
+
+        return new CustomerVault\ACHSingleUseToken($response);
+    }
+
+    /**
+     * @param CustomerVault\EFTSingleUseToken $EFTSingleUseToken
+     * @return CustomerVault\EFTSingleUseToken
+     * @throws PaysafeException
+     */
+    public function createEFTSingleUseToken(CustomerVault\EFTSingleUseToken $EFTSingleUseToken)
+    {
+        $EFTSingleUseToken->setRequiredFields([
+            'eftBankAccount',
+            'billingAddress',
+        ]);
+
+        $EFTSingleUseToken->setOptionalFields([
+            'profile'
+        ]);
+
+        $EFTSingleUseToken->profile->setOptionalFields([
+            'firstName',
+            'lastName',
+            'email',
+        ]);
+
+        $EFTSingleUseToken->profile->dateOfBirth->setRequiredFields([
+            'year',
+            'month',
+            'day',
+        ]);
+
+        $EFTSingleUseToken->eftBankAccount->setRequiredFields([
+            'accountNumber',
+            'accountHolderName',
+            'transitNumber',
+            'institutionId',
+        ]);
+
+        $EFTSingleUseToken->billingAddress->setRequiredFields([
+            'street',
+            'city',
+            'zip',
+            'country',
+        ]);
+
+        $EFTSingleUseToken->billingAddress->setOptionalFields([
+            'nickName',
+            'street2',
+            'state',
+        ]);
+
+        $request = new Request(array(
+            'method' => Request::POST,
+            'uri' => $this->prepareURI("/eftsingleusetokens"),
+            'body' => $EFTSingleUseToken
+        ));
+        $response = $this->client->processRequest($request);
+
+        return new CustomerVault\EFTSingleUseToken($response);
+    }
 }
