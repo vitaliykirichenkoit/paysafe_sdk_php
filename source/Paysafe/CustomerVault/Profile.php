@@ -42,8 +42,10 @@ namespace Paysafe\CustomerVault;
  * @property \Paysafe\Error $error
  * @property \Paysafe\Link[] $links
  * @property \Paysafe\achbankaccount $achBankAccounts
+ * @property ACHBankaccounts $achBankAccount
  * @property \Paysafe\bacsbankaccounts $bacsBankAccounts
  * @property \Paysafe\eftbankaccounts $eftBankAccounts
+ * @property EFTBankaccounts $eftBankAccount
  * @property \Paysafe\sepabankaccounts $sepaBankAccounts
  */
 class Profile extends \Paysafe\JSONObject
@@ -79,9 +81,11 @@ class Profile extends \Paysafe\JSONObject
          'cards'=>'array:\Paysafe\CustomerVault\Card',
          'error' => '\Paysafe\Error',
          'links' => 'array:\Paysafe\Link',
-		     'achBankAccounts' => 'array:\Paysafe\CustomerVault\ACHBankaccounts',
+            'achBankAccounts' => 'array:\Paysafe\CustomerVault\ACHBankaccounts',
+         'achBankAccount' => '\Paysafe\CustomerVault\ACHBankaccounts',
          'bacsBankAccounts' => 'array:\Paysafe\CustomerVault\BACSBankaccounts',
-         'eftBankAccounts' => 'array:\Paysafe\CustomerVault\EFTBankaccounts',
+            'eftBankAccounts' => 'array:\Paysafe\CustomerVault\EFTBankaccounts',
+         'eftBankAccount' => '\Paysafe\CustomerVault\EFTBankaccounts',
          'sepaBankAccounts' => 'array:\Paysafe\CustomerVault\SEPABankaccounts'
     );
 

@@ -37,6 +37,20 @@ class PaysafeApiClient
     private $keyPassword;
 
     /**
+	 * The merchant's single-use api key
+	 *
+	 * @var string
+	 */
+    private $singleUseKeyID;
+
+    /**
+	 * The merchant's single-use api secret
+	 *
+	 * @var string
+	 */
+    private $singleUseKeyPassword;
+
+    /**
 	 * Specify whether to submit requests to production or testing
 	 */
     private $environment;
@@ -91,17 +105,31 @@ class PaysafeApiClient
 	 *
 	 * @param string $keyID
 	 * @param string $keyPassword
+	 * @param string $singleUseKeyID
+	 * @param string $singleUseKeyPassword
 	 * @param string $environment \Paysafe\Environment::TEST (default) or \Paysafe\Environment::LIVE
 	 * @param string $account
 	 * @throws PaysafeException
 	 */
-    public function __construct($keyID, $keyPassword, $environment = null, $account = null)
-    {
+    public function __construct(
+        $keyID,
+        $keyPassword,
+        $singleUseKeyID,
+        $singleUseKeyPassword,
+        $environment = null,
+        $account = null
+    ) {
         if (!is_scalar($keyID)) {
             throw new PaysafeException('Invalid parameter $keyId. String Expected');
         }
         if (!is_scalar($keyPassword)) {
             throw new PaysafeException('Invalid parameter $keyPassword. String Expected');
+        }
+        if (!is_scalar($singleUseKeyID)) {
+            throw new PaysafeException('Invalid parameter $singleUseKeyID. String Expected');
+        }
+        if (!is_scalar($singleUseKeyPassword)) {
+            throw new PaysafeException('Invalid parameter $singleUseKeyPassword. String Expected');
         }
 
         if (is_null($environment)) {
@@ -115,6 +143,8 @@ class PaysafeApiClient
         $this->keyID = $keyID;
         $this->keyPassword = $keyPassword;
         $this->environment = $environment;
+        $this->singleUseKeyID = $singleUseKeyID;
+        $this->singleUseKeyPassword = $singleUseKeyPassword;
 
         if ($this->environment == Environment::TEST) {
             $this->apiEndPoint = "https://api.test.paysafe.com";
@@ -203,17 +233,21 @@ class PaysafeApiClient
     /**
      * @param \Paysafe\Request $request
      * @param bool $raw
+     * @param bool $isSingleUse
      * @return type
      * @throws PaysafeException
      */
-    public function processRequest(Request $request, $raw = false)
+    public function processRequest(Request $request, $raw = false, $isSingleUse = false)
     {
+        $id = $isSingleUse ? $this->singleUseKeyID : $this->keyID;
+        $password = $isSingleUse ? $this->singleUseKeyPassword : $this->keyPassword;
+
         $curl = curl_init();
         $headers = array();
         $opts = array(
              CURLOPT_URL => $request->buildUrl($this->apiEndPoint),
              CURLOPT_HTTPHEADER => array(
-                  'Authorization: Basic ' . base64_encode($this->keyID . ':' . $this->keyPassword),
+                  'Authorization: Basic ' . base64_encode($id . ':' . $password),
                   'Content-Type: application/json; charset=utf-8',
 		  'SDK-Type: Paysafe_PHP_SDK'
              ),

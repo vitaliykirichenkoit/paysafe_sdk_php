@@ -1076,7 +1076,7 @@ class CustomerVaultService
             'uri' => $this->prepareURI("/achsingleusetokens"),
             'body' => $ACHSingleUseToken
         ));
-        $response = $this->client->processRequest($request);
+        $response = $this->client->processRequest($request, false, true);
 
         return new CustomerVault\ACHSingleUseToken($response);
     }
@@ -1134,7 +1134,7 @@ class CustomerVaultService
             'uri' => $this->prepareURI("/eftsingleusetokens"),
             'body' => $EFTSingleUseToken
         ));
-        $response = $this->client->processRequest($request);
+        $response = $this->client->processRequest($request, false, true);
 
         return new CustomerVault\EFTSingleUseToken($response);
     }

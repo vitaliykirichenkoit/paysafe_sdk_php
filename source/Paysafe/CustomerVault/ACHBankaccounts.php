@@ -34,6 +34,7 @@
      * @property string $lastDigits
      * @property string $billingAddressId
      * @property string $paymentToken
+     * @property string $singleUseToken
      */
     class ACHBankaccounts extends \Paysafe\JSONObject
     {
@@ -58,7 +59,8 @@
             ),
             'lastDigits' => 'string',
             'billingAddressId' => 'string',
-            'paymentToken' => 'string'
+            'paymentToken' => 'string',
+            'singleUseToken' => 'string',
         );
 
     }
