@@ -101,6 +101,86 @@ class CustomerVaultService
     }
 
     /**
+     * @param CustomerVault\Profile $profile
+     * @return CustomerVault\Profile
+     * @throws PaysafeException
+     */
+    public function createACHProfileUsingSingleUseToken(CustomerVault\Profile $profile)
+    {
+        $profile->setRequiredFields(array(
+            'merchantCustomerId',
+            'locale',
+            'achBankAccount',
+        ));
+        $profile->setOptionalFields(array(
+            'firstName',
+            'middleName',
+            'lastName',
+            'dateOfBirth',
+            'ip',
+            'gender',
+            'nationality',
+            'email',
+            'phone',
+            'cellPhone',
+            'card',
+            'cards',
+        ));
+        $profile->achBankAccount->setRequiredFields(array(
+            'singleUseToken'
+        ));
+
+        $request = new Request(array(
+            'method' => Request::POST,
+            'uri' => $this->prepareURI("/profiles"),
+            'body' => $profile
+        ));
+        $response = $this->client->processRequest($request);
+
+        return new CustomerVault\Profile($response);
+    }
+
+    /**
+     * @param CustomerVault\Profile $profile
+     * @return CustomerVault\Profile
+     * @throws PaysafeException
+     */
+    public function createEFTProfileUsingSingleUseToken(CustomerVault\Profile $profile)
+    {
+        $profile->setRequiredFields(array(
+            'merchantCustomerId',
+            'locale',
+            'eftBankAccount',
+        ));
+        $profile->setOptionalFields(array(
+            'firstName',
+            'middleName',
+            'lastName',
+            'dateOfBirth',
+            'ip',
+            'gender',
+            'nationality',
+            'email',
+            'phone',
+            'cellPhone',
+            'card',
+            'cards',
+        ));
+        $profile->eftBankAccount->setRequiredFields(array(
+            'singleUseToken'
+        ));
+
+        $request = new Request(array(
+            'method' => Request::POST,
+            'uri' => $this->prepareURI("/profiles"),
+            'body' => $profile
+        ));
+        $response = $this->client->processRequest($request);
+
+        return new CustomerVault\Profile($response);
+    }
+
+    /**
      * Update profile.
      *
      * @param \Paysafe\CustomerVault\Profile $profile
