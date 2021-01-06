@@ -234,10 +234,13 @@ class PaysafeApiClient
      * @param \Paysafe\Request $request
      * @param bool $raw
      * @param bool $isSingleUse
-     * @return type
+     * @param bool $verbose
+     *
      * @throws PaysafeException
+     *
+     * @return type
      */
-    public function processRequest(Request $request, $raw = false, $isSingleUse = false)
+    public function processRequest(Request $request, $raw = false, $isSingleUse = false, $verbose = false)
     {
         $id = $isSingleUse ? $this->singleUseKeyID : $this->keyID;
         $password = $isSingleUse ? $this->singleUseKeyPassword : $this->keyPassword;
