@@ -46,17 +46,20 @@ class CardPaymentService
     /**
 	 * Monitor.
 	 *
+     * @param bool $verbose
+     *
+     * @throws PaysafeException
+     *
 	 * @return bool true if successful
-	 * @throws PaysafeException
 	 */
-    public function monitor()
+    public function monitor($verbose = false)
     {
-        $request = new Request(array(
+        $request = new Request([
              'method' => Request::GET,
              'uri' => 'cardpayments/monitor'
-        ));
+        ]);
 
-        $response = $this->client->processRequest($request);
+        $response = $this->client->processRequest($request, false, false, $verbose);
         return ($response['status'] == 'READY');
     }
 
