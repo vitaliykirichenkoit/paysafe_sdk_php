@@ -54,6 +54,7 @@ class Card extends \Paysafe\JSONObject
          'lastDigits' => 'string',
          'cardExpiry' => '\Paysafe\CustomerVault\CardExpiry',
          'cardType' => 'string',
+         'cardCategory' => 'string',
          'billingAddressId' => 'string',
          'defaultCardIndicator' => 'bool',
          'paymentToken' => 'string',
