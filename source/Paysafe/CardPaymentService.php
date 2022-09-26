@@ -85,6 +85,7 @@ class CardPaymentService
              'shippingDetails',
              'recurring',
              'merchantDescriptor',
+             'keywords',
              'accordD',
              'description',
              'splitpay',
@@ -303,7 +304,8 @@ class CardPaymentService
              'customerIp',
              'dupCheck',
              'description',
-             'billingDetails'
+             'billingDetails',
+	     'storedCredential'
         ));
 
         $request = new Request(array(
