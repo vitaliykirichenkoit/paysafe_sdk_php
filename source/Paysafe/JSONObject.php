@@ -38,7 +38,7 @@ class JSONObject {
             throw new PaysafeException('Invalid optional fields. Array expected.');
         }
         if (($diff = array_diff($fields, array_keys(static::$fieldTypes)))) {
-            throw new PaysafeException('Invalid optional fields. Unknown fields: ' . join(', ', $diff));
+            throw new PaysafeException('Invalid optional fields. Unknown fields: ' . implode(', ', $diff));
         }
 
         $this->optionalFields = $fields;
@@ -54,7 +54,7 @@ class JSONObject {
             throw new PaysafeException('Invalid required fields. Array expected.');
         }
         if (($diff = array_diff($fields, array_keys(static::$fieldTypes)))) {
-            throw new PaysafeException('Invalid required fields. Unknown fields: ' . join(', ', $diff));
+            throw new PaysafeException('Invalid required fields. Unknown fields: ' . implode(', ', $diff));
         }
 
         $this->requiredFields = $fields;
@@ -134,7 +134,7 @@ class JSONObject {
     private function cast($name, $value, $type) {
         if (is_array($type)) {
             if (!is_null($value) && !in_array($value, $type)) {
-                throw new PaysafeException("Invalid value for property $name for class " . get_class($this) . ". Expected one of: " . join(', ', $type) . ".");
+                throw new PaysafeException("Invalid value for property $name for class " . get_class($this) . ". Expected one of: " . implode(', ', $type) . ".");
             }
             return $value;
         }
@@ -226,7 +226,7 @@ class JSONObject {
 
     public function checkRequiredFields() {
         if (($diff = array_diff($this->requiredFields, array_keys($this->properties)))) {
-            throw new PaysafeException('Missing required properties: ' . join(', ', $diff), 500);
+            throw new PaysafeException('Missing required properties: ' . implode(', ', $diff), 500);
         }
     }
 

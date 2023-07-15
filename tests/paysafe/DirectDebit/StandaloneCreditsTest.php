@@ -9,8 +9,9 @@ namespace Paysafe\DirectDebit;
 
 use Paysafe\Link;
 use Paysafe\PaysafeException;
+use PHPUnit\Framework\TestCase;
 
-class StandaloneCreditsTest extends \PHPUnit_Framework_TestCase
+class StandaloneCreditsTest extends TestCase
 {
     public function testConstruct()
     {
@@ -56,7 +57,7 @@ class StandaloneCreditsTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(PaysafeException::class);
         $this->expectExceptionCode(500);
-        $this->expectExceptionMessage('Missing required properties: ' . join(', ', $required_fields));
+        $this->expectExceptionMessage('Missing required properties: ' . implode(', ', $required_fields));
 
         $sac->checkRequiredFields();
     }

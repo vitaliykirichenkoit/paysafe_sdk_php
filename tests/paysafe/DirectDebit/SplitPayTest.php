@@ -8,10 +8,10 @@
 
 namespace Paysafe\DirectDebit;
 
-
 use Paysafe\PaysafeException;
+use PHPUnit\Framework\TestCase;
 
-class SplitPayTest extends \PHPUnit_Framework_TestCase
+class SplitPayTest extends TestCase
 {
     public function testConstruct()
     {
@@ -27,7 +27,7 @@ class SplitPayTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(PaysafeException::class);
         $this->expectExceptionCode(500);
-        $this->expectExceptionMessage('Missing required properties: ' . join(', ', $required_fields));
+        $this->expectExceptionMessage('Missing required properties: ' . implode(', ', $required_fields));
 
         $splitpay->checkRequiredFields();
     }

@@ -30,7 +30,7 @@ class Response
     {
         if(is_array($options)) {
             if (array_diff_key($options, $this->response)) {
-                throw new PaysafeException('Invalid response parameters. Expected only ' . join(', ', array_keys($this->response)));
+                throw new PaysafeException('Invalid response parameters. Expected only ' . implode(', ', array_keys($this->response)));
             }
 
             foreach ($options as $key => $val) {

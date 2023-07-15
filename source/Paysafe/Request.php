@@ -74,7 +74,7 @@ class Request implements \ArrayAccess
     {
         if(is_array($options)) {
             if (array_diff_key($options, $this->request)) {
-                throw new PaysafeException('Invalid request parameters. Expected only ' . join(', ', array_keys($this->request)));
+                throw new PaysafeException('Invalid request parameters. Expected only ' . implode(', ', array_keys($this->request)));
             }
 
             foreach ($options as $key => $val) {

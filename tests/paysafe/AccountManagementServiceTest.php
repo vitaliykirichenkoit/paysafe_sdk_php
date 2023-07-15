@@ -7,6 +7,9 @@
  */
 
 namespace Paysafe;
+
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use function json_encode;
 use Paysafe\AccountManagement\Transfer;
 
@@ -14,12 +17,12 @@ use Paysafe\AccountManagement\Transfer;
  * Class AccountManagementServiceTest
  * @package Paysafe
  */
-class AccountManagementServiceTest extends \PHPUnit_Framework_TestCase
+class AccountManagementServiceTest extends TestCase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject $mock_api_client */
+    /** @var MockObject $mock_api_client */
     private $mock_api_client;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

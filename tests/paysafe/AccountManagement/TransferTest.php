@@ -8,14 +8,14 @@
 
 namespace Paysafe\AccountManagement;
 
-
+use PHPUnit\Framework\TestCase;
 use function json_encode;
 use Paysafe\JSONObject;
 use Paysafe\Link;
 use Paysafe\Pageable;
 use Paysafe\PaysafeException;
 
-class TransferTest extends \PHPUnit_Framework_TestCase
+class TransferTest extends TestCase
 {
     public function testConstruct()
     {
@@ -85,7 +85,7 @@ class TransferTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(PaysafeException::class);
         $this->expectExceptionCode(500);
-        $this->expectExceptionMessage('Missing required properties: ' . join(', ', $required_fields));
+        $this->expectExceptionMessage('Missing required properties: ' . implode(', ', $required_fields));
         $t->checkRequiredFields();
     }
 

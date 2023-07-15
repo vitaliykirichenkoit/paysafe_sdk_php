@@ -10,44 +10,23 @@ namespace Paysafe;
  * TODO complete coverage
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use function json_decode;
 use function json_encode;
 use Paysafe\DirectDebit\Purchase;
-use PHPUnit_Framework_Error;
 
-class DirectDebitServiceTest extends \PHPUnit_Framework_TestCase
+class DirectDebitServiceTest extends TestCase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject $mock_api_client */
+    /** @var MockObject $mock_api_client */
     private $mock_api_client;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->mock_api_client = $this->createMock(PaysafeApiClient::class);
         $this->mock_api_client->method('getAccount')->willReturn('bogus_account_num');
-    }
-
-    /**
-     * This is a bad test as it simply confirms current undesirable behavior. If no type is specified in the Purchase
-     * object (ach, eft, etc), then a PHP Error is generated. Ideally, the code would gracefully handle this situation.
-     * See: https://github.com/paysafegroup/paysafe_sdk_php/issues/13
-     */
-    public function testSubmitNoTypeSpecified()
-    {
-        $this->expectException(PHPUnit_Framework_Error::class);
-        $this->expectExceptionMessage('Undefined variable: return');
-        /*
-         * When https://github.com/paysafegroup/paysafe_sdk_php/issues/13 is resolved, we would likely replace the
-         * previous two expectations with something like:
-         * $this->expectException(PaysafeException::class);
-         * $this->expectExceptionCode(500);
-         * $this->expectExceptionMessage('Some appropriate message about there not being a type specified');
-         */
-
-        $dds = new DirectDebitService($this->mock_api_client);
-        $empty_purchase = new Purchase();
-        $dds->submit($empty_purchase);
     }
 
     /*

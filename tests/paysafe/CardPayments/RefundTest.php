@@ -8,10 +8,10 @@
 
 namespace Paysafe\CardPayments;
 
-
 use Paysafe\PaysafeException;
+use PHPUnit\Framework\TestCase;
 
-class RefundTest extends \PHPUnit_Framework_TestCase
+class RefundTest extends TestCase
 {
     public function testConstruct()
     {
@@ -33,7 +33,7 @@ class RefundTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(PaysafeException::class);
         $this->expectExceptionCode(500);
-        $this->expectExceptionMessage('Missing required properties: ' . join(', ', $required_fields));
+        $this->expectExceptionMessage('Missing required properties: ' . implode(', ', $required_fields));
 
         $refund->checkRequiredFields();
     }

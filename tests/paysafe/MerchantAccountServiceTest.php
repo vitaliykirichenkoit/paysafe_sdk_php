@@ -1,7 +1,7 @@
 <?php
 
 namespace Paysafe;
-use function json_encode;
+
 use Paysafe\AccountManagement\MerchantAccount;
 use Paysafe\AccountManagement\MerchantAccountAddress;
 use Paysafe\AccountManagement\MerchantAccountBusinessOwner;
@@ -10,19 +10,20 @@ use Paysafe\AccountManagement\MerchantAccountBusinessOwnerIdentityDocument;
 use Paysafe\AccountManagement\MerchantEftBankAccount;
 use Paysafe\AccountManagement\MerchantSubAccount;
 use Paysafe\AccountManagement\TermsAndConditions;
-use Paysafe\AccountManagement\Transfer;
 use Paysafe\AccountManagement\User;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class MerchantAccountServiceTest
  * @package Paysafe
  */
-class MerchantAccountServiceTest extends \PHPUnit_Framework_TestCase
+class MerchantAccountServiceTest extends TestCase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject $mock_api_client */
+    /** @var MockObject $mock_api_client */
     private $mock_api_client;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

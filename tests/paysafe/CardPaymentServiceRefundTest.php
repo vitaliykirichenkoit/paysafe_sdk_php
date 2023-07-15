@@ -9,18 +9,20 @@
 namespace Paysafe;
 
 use Paysafe\CardPayments\Refund;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class CardPaymentServiceRefundTest
  * This class provides coverage of the CardPaymentService::refund function
  * @package Paysafe
  */
-class CardPaymentServiceRefundTest extends \PHPUnit_Framework_TestCase
+class CardPaymentServiceRefundTest extends TestCase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject $mock_api_client */
+    /** @var MockObject $mock_api_client */
     private $mock_api_client;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

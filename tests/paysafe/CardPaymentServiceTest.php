@@ -12,16 +12,19 @@ namespace Paysafe;
  * This class provides incomplete coverage of the CardPaymentService; I'm writing today just to test splitpay
  * TODO complete coverage
  */
+
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use function json_encode;
 use Paysafe\CardPayments\Authorization;
 use Paysafe\CardPayments\Settlement;
 
-class CardPaymentServiceTest extends \PHPUnit_Framework_TestCase
+class CardPaymentServiceTest extends TestCase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject $mock_api_client */
+    /** @var MockObject $mock_api_client */
     private $mock_api_client;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

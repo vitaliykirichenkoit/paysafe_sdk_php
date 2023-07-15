@@ -178,7 +178,7 @@ class ThreeDSecureService
             $queryStr = array();
             if ($fields)
             {
-                $queryStr['fields'] = join(',', $fields);
+                $queryStr['fields'] = implode(',', $fields);
             }
  
             $request = new Request(array(
